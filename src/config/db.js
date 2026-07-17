@@ -11,14 +11,13 @@ const connectDB = async () => {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }).then((mongooseInstance) => {
-      cached.conn = mongooseInstance;
-      console.log(`✅ MongoDB Connected: ${mongooseInstance.connection.host}`);
-      return mongooseInstance;
-    });
+    // Simply remove the legacy options object here
+    cached.promise = mongoose.connect(process.env.MONGODB_URI)
+      .then((mongooseInstance) => {
+        cached.conn = mongooseInstance;
+        console.log(`✅ MongoDB Connected: ${mongooseInstance.connection.host}`);
+        return mongooseInstance;
+      });
   }
 
   return cached.promise;
